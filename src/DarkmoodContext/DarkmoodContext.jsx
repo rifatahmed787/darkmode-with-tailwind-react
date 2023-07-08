@@ -1,22 +1,25 @@
-import { createContext, useState } from "react";
-import PropTypes from "prop-types";
+/* eslint-disable react/prop-types */
+import { createContext, useState, useEffect } from "react";
 
 export const DarkModeContext = createContext();
 
 export const DarkModeProvider = ({ children }) => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    const darkModeEnabled = localStorage.getItem("darkModeEnabled") === "true";
+    setDarkMode(darkModeEnabled);
+  }, []);
 
   const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
+    const updatedMode = !darkMode;
+    setDarkMode(updatedMode);
+    localStorage.setItem("darkModeEnabled", updatedMode.toString());
   };
 
   return (
-    <DarkModeContext.Provider value={{ isDarkMode, toggleDarkMode }}>
+    <DarkModeContext.Provider value={{ darkMode, toggleDarkMode }}>
       {children}
     </DarkModeContext.Provider>
   );
-};
-
-DarkModeProvider.propTypes = {
-  children: PropTypes.node.isRequired,
 };

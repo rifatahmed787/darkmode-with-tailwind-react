@@ -1,13 +1,13 @@
 import { useContext } from "react";
 import { DarkModeContext } from "../../DarkmoodContext/DarkmoodContext";
 
-const Sidebar = () => {
+const Home = () => {
   const { darkMode } = useContext(DarkModeContext);
   return (
-    <div className={`text-black h-full ${darkMode ? "dark" : "light"}`}>
-      hello sidebar
+    <div className={`min-h-screen ${darkMode ? "dark" : "light"}`}>
+      <h1>hello home</h1>
     </div>
   );
 };
 
-export default Sidebar;
+export default Home;

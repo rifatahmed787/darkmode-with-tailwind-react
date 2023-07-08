@@ -1,37 +1,22 @@
 import { Icon } from "@iconify/react";
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import resume from "../../assets/Resume/Personal Portfolio.pdf";
 import "./Navbar.css";
+import { DarkModeContext } from "../../DarkmoodContext/DarkmoodContext";
+import Sidebar from "../Sidebar/Sidebar";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
+  const { darkMode, toggleDarkMode } = useContext(DarkModeContext);
+
   const [IsSidebarOpen, setIsSidebarOpen] = useState(true);
 
   //for sidebar open and close
   const handleSidebarClose = () => setIsSidebarOpen(!IsSidebarOpen);
 
-  //dark mode handle
-
-  useEffect(() => {
-    const darkModeEnabled = localStorage.getItem("darkModeEnabled") === "true";
-    setDarkMode(darkModeEnabled);
-  }, []);
-
-  const toggleDarkMode = () => {
-    const updatedMode = !darkMode;
-    setDarkMode(updatedMode);
-    localStorage.setItem("darkModeEnabled", updatedMode.toString());
-    updateTheme(updatedMode);
-  };
-
-  const updateTheme = (darkModeEnabled) => {
-    const root = window.document.documentElement;
-    root.classList.toggle("dark", darkModeEnabled);
-  };
-
   return (
-    <div className="bg-[#000000] dark">
+    <div className={darkMode ? "dark" : "light"}>
       <div className="px-4 py-6 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
         <div className="relative">
           <div className="flex items-center  justify-end space-x-5 ">
@@ -47,6 +32,9 @@ const Navbar = () => {
                   className="text-white"
                 />
               </button>
+              <li>
+                <Link to="/"> Home</Link>
+              </li>
 
               {/*darkmood toggole button start here  */}
 
@@ -104,7 +92,9 @@ const Navbar = () => {
               className={`fixed -left-80 top-0 h-full w-72 bg-white transition-transform transform ${
                 IsSidebarOpen ? "translate-x-0 " : "translate-x-full"
               }`}
-            ></div>
+            >
+              <Sidebar />
+            </div>
           </div>
           <div className="ml-auto lg:hidden">
             <button
